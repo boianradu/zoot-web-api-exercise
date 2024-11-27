@@ -9,6 +9,8 @@
     "start": "node dist/app.js",
     "db:create": "cd db && ./db-create",
     "db:start": "cd db && ./db-start",
+    "db:run-create": "cd db && docker build -t db .",
+    "db:run-start": "cd db && docker run --name postgres -d -p 5432:5432 postgres",
     "db:delete": "docker stop postgres && docker rm postgres",
     "test": "jest",
     "test:watch": "jest --watchAll",
