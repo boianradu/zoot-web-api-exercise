@@ -2,6 +2,7 @@ import express, { type Request, type Response } from 'express';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 
+import router from "./routes/zoot.routes";
 import { ONE_HUNDRED, ONE_THOUSAND, SIXTY } from './core/constants';
 
 interface ServerOptions {
@@ -20,12 +21,7 @@ export class Server {
     }
 
     private initializeRoutes() {
-        // Test REST API
-        this.app.get('/', (_req: Request, res: Response) => {
-            res.status(200).send({
-                message: `Welcome to Initial API! \n Endpoints available at http://localhost:${this.port}/`,
-            });
-        });
+        this.app.use(router)
     }
 
     async start(): Promise<void> {

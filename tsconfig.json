@@ -1,37 +1,39 @@
 {
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src/**/*.test.ts"
-  ],
-  "include": [
-    "src/**/*"
-  ],
-  "compilerOptions": {
-    "types": [
-      "node",
-      "jest",
-      "express"
+    "exclude": [
+        "node_modules",
+        "dist",
+        "src/**/*.test.ts"
     ],
-    "baseUrl": "./",
-    "paths": {
-      "*": [
-        "src/*"
-      ]
-    },
-    "target": "ESNext",
-    "module": "CommonJS",
-    "rootDir": "./src",
-    "moduleResolution": "Node",
-    "typeRoots": [
-      "./node_modules/@types"
+    "include": [
+        "src/**/*"
     ],
-    "sourceMap": true,
-    "outDir": "dist/",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "skipLibCheck": true
-  }
+    "compilerOptions": {
+        "types": [
+            "node",
+            "jest",
+            "express"
+        ],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "baseUrl": "./",
+        "paths": {
+            "*": [
+                "src/*"
+            ]
+        },
+        "target": "ESNext",
+        "module": "CommonJS",
+        "rootDir": "./src",
+        "moduleResolution": "Node",
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "sourceMap": true,
+        "outDir": "dist/",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "skipLibCheck": true
+    }
 }
