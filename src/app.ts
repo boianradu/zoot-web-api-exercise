@@ -11,6 +11,5 @@ function main(): void {
         port: envs.PORT,
         apiPrefix: envs.API_PREFIX
     });
-    log("asda")
     void server.start();
 }
