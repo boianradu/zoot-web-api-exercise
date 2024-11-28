@@ -7,6 +7,7 @@ import { log } from './utils/logger';
 })();
 
 function main(): void {
+    log("Starting ZOOOOOOOT")
     const server = new Server({
         port: envs.PORT,
         apiPrefix: envs.API_PREFIX

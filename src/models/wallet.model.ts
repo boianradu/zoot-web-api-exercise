@@ -23,14 +23,13 @@ export class Wallet {
 
     // Define relationships if needed
     @OneToMany(() => TransactionHistory, (transaction) => transaction.id)
-    transactions: TransactionHistory[];
+    transactions: TransactionHistory[] | undefined;
 
     constructor(status: string = '', currency: number = 0, current_balance: number = 0) {
         this.status = status;  // Default value for status
         this.currency = currency;  // Default value for currency
         this.current_balance = current_balance;  // Default value for balance
         this.date_creation = new Date();  // Default to current date
-        this.date_update = new Date();  // Default to current date
-        this.transactions = [];  // Default to empty array
+        this.date_update = new Date();  // Default to current date 
     }
 }

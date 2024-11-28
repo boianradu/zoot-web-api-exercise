@@ -16,9 +16,9 @@ export class WalletService {
 
         if (!wallet) return null;
 
-        // wallet.transactions.push(transactionId);
         wallet.current_balance += coins;
 
+        // update transaction
         await this.repository.update(walletId, wallet);
 
         return wallet;

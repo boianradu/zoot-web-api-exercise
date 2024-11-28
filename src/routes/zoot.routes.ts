@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { WalletService } from "../core/wallet";
+import { WalletService } from "../controller/wallet";
 import { WalletRepository } from "../db/wallet";
 
 const router = express.Router();

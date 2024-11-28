@@ -1,16 +1,19 @@
 import { DataSource } from "typeorm";
 import { Wallet } from "../models/wallet.model";
+import { User } from "../models/user.model";
+import { TransactionHistory } from "../models/transaction.model";
+import { envs } from "../core/config/env"
 
 export const AppDataSource = new DataSource({
     type: "postgres",
-    host: "localhost",
     port: 5432,
-    username: "your_username",
-    password: "your_password",
-    database: "your_database",
+    username: envs.DB_USER,
+    password: envs.DB_PASS,
+    database: envs.DB_NAME,
+    host: envs.DB_HOST,
     synchronize: true,
     logging: false,
-    entities: [Wallet],
+    entities: [Wallet, User, TransactionHistory],
     migrations: [],
     subscribers: [],
 });

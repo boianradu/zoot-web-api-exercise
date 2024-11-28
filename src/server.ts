@@ -1,8 +1,10 @@
-import express, { type Request, type Response } from 'express';
+import express from 'express';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
+import { log } from './utils/logger'
 
 import router from "./routes/zoot.routes";
+import { seedDatabase } from "./db/data-seeding";
 import { ONE_HUNDRED, ONE_THOUSAND, SIXTY } from './core/constants';
 
 interface ServerOptions {
@@ -18,8 +20,12 @@ export class Server {
         const { port } = options;
         this.port = port;
         this.initializeRoutes()
+        // this.seedDB()
     }
 
+    private seedDB() {
+        seedDatabase().catch((error) => log(error));
+    }
     private initializeRoutes() {
         this.app.use(router)
     }
@@ -40,7 +46,7 @@ export class Server {
 
 
         this.app.listen(this.port, () => {
-            console.log(`Server running on http://localhost:${this.port}`);
+            log(`Server running on http://localhost:${this.port}`);
         });
     }
 }

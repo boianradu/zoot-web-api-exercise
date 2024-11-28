@@ -6,8 +6,7 @@ export const envs = {
     API_PREFIX: get('DEFAULT_API_PREFIX').default('/').asString(),
     NODE_ENV: get('NODE_ENV').default('development').asString(),
 
-    // DB
-    DB_TYPE: get('DB_TYPE').default('postgres').asString(),
+    // DB 
     DB_PORT: get('PORT').required().asPortNumber(),
     DB_HOST: get('DB_HOST').default('localhost').asString(),
     DB_USER: get('DB_USER').default('postgres').asString(),
