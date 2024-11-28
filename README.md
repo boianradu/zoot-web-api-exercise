@@ -3,29 +3,43 @@
 The goal of this exercise is for you to build a simple HTTP Server that passes a set of provide automated scripts. The automated test scripts are provided as PostMan scripts and can be run from the command line with newman.
 Requirements 
 
-
+# How to run
+## Start the services
+``` sh
+npm run db:run-create
+npm run db:run-start
+```
 
 ## DB structure
 ### Wallet
-id - unique; inc
-status - active/inactive; str 
-currency - float
-current_balance - float
-date_creation - date
-date_update - date
+| Column Name       | Data Type | Description             |
+|-------------------|-----------|-------------------------|
+| id                | INT       | Unique, auto-incrementing ID |
+| status            | VARCHAR   | Active/Inactive status  |
+| currency          | VARCHAR   | Type of currency        |
+| current_balance   | FLOAT     | Current wallet balance  |
+| date_creation     | DATE      | Date the wallet was created |
+| date_update       | DATE      | Date of the last update |
+
 
 ### User
-id- unique, int 
-name - str
-id_wallets int, fk to Wallet.id
+| Column Name | Data Type | Description                     |
+|-------------|-----------|---------------------------------|
+| id          | INT       | Unique, auto-incrementing ID    |
+| name        | VARCHAR   | Name of the user               |
+| id_wallets  | INT       | Foreign key to `Wallet.id`     |
+
 
 ### Transaction history
-id - unique, int
-id_wallet - int, fk to Wallet.id
-date - date
-transaction_amount - float
-status - str, successful/unsuccesful
-resulted_balance - float
+| Column Name        | Data Type | Description                                |
+|--------------------|-----------|--------------------------------------------|
+| id                 | INT       | Unique, auto-incrementing ID               |
+| id_wallet          | INT       | Foreign key to `Wallet.id`                 |
+| date               | DATE      | Date of the transaction                    |
+| transaction_amount | FLOAT     | Amount involved in the transaction         |
+| status             | VARCHAR   | Transaction status (successful/unsuccessful) |
+| resulted_balance   | FLOAT     | Balance after the transaction              |
+
 
 
 ## APIs endpoints
