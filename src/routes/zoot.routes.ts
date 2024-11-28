@@ -3,7 +3,6 @@ import { getUsers, createUser } from '../controllers/zoot.controller';
 
 const router = Router();
 
-router.get('/', getUsers);
-router.post('/', createUser);
+router.get('/wallets', getUsers);
 
 export default router;
