@@ -10,8 +10,8 @@
     "db:create": "cd db && ./db-create",
     "db:start": "cd db && ./db-start",
     "db:run-create": "cd db && docker build -t db .",
-    "db:run-start": "cd db && docker run --name postgres -d -p 5432:5432 postgres",
-    "db:delete": "docker stop postgres && docker rm postgres",
+    "db:run-start": "cd db && docker run --name db_zoot -d -p 5432:5432 db",
+    "db:delete": "docker stop db_zoot && docker rm db_zoot",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage"
