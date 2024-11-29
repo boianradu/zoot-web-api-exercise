@@ -30,8 +30,11 @@ export class ControllerWallet {
             return null
         });
     }
-    async createWallet(walletId: string) {
-        let wallet = await this.currentWallet.createWallet()
+    async createWallet(walletId: string, coins: number) {
+        const wallet = await this.currentWallet.createWallet(walletId, coins)
+        if (!wallet) {
+            return null
+        }
         return wallet;
     }
 
@@ -44,8 +47,7 @@ export class ControllerWallet {
         return wallet;
     }
 
-    async debitWallet(walletId: string, transactionId: string, coins: number) {
-        const wallet = await this.currentWallet.findById(walletId);
+    async debitWallet(wallet: Wallet, coins: number) {
 
         if (!wallet) return null;
 

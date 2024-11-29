@@ -1,8 +1,7 @@
 import { AppDataSource } from "./db";
 import { Wallet } from "../models/wallet.model";  // Adjust with the correct path
 import { User } from "../models/user.model";  // Adjust with the correct path
-import { TransactionHistory } from "../models/transaction.model";  // Adjust with the correct path
-const crypto = require("crypto");
+import { TransactionHistory } from "../models/transaction.model";  // Adjust with the correct path 
 export const seedDatabase = async () => {
     try {
         // Initialize the data source
@@ -66,7 +65,7 @@ export const seedDatabase = async () => {
         console.log("Users created");
 
         // Insert Transaction History records// Create and insert transaction 1: Initial credit
-        const transaction1 = new TransactionHistory(null, wallet1.id);
+        const transaction1 = new TransactionHistory(null, null, wallet1.id);
         transaction1.transaction_amount = 100.00;
         transaction1.status = 'completed';
         transaction1.resulted_balance = wallet1.current_balance + transaction1.transaction_amount;
@@ -74,7 +73,7 @@ export const seedDatabase = async () => {
         await transactionRepository.save(transaction1);
 
         // Create and insert transaction 2: Duplicate credit
-        const transaction2 = new TransactionHistory(null, wallet1.id);
+        const transaction2 = new TransactionHistory(null, null, wallet1.id);
         transaction2.transaction_amount = 100.00;
         transaction2.status = 'duplicate';
         transaction2.resulted_balance = wallet1.current_balance + transaction2.transaction_amount;
@@ -82,7 +81,7 @@ export const seedDatabase = async () => {
         await transactionRepository.save(transaction2);
 
         // Create and insert transaction 3: Overdraft debit
-        const transaction3 = new TransactionHistory(null, wallet1.id);
+        const transaction3 = new TransactionHistory(null, null, wallet1.id);
         transaction3.transaction_amount = 150.00;
         transaction3.status = 'pending';
         transaction3.resulted_balance = wallet1.current_balance - transaction3.transaction_amount;
@@ -90,7 +89,7 @@ export const seedDatabase = async () => {
         await transactionRepository.save(transaction3);
 
         // Create and insert transaction 4: Valid debit
-        const transaction4 = new TransactionHistory(null, wallet1.id);
+        const transaction4 = new TransactionHistory(null, null, wallet1.id);
         transaction4.transaction_amount = 50.00;
         transaction4.status = 'completed';
         transaction4.resulted_balance = wallet1.current_balance - transaction4.transaction_amount;
@@ -98,14 +97,14 @@ export const seedDatabase = async () => {
         await transactionRepository.save(transaction4);
 
         // Create and insert transaction 5: Duplicate debit
-        const transaction5 = new TransactionHistory(null, wallet1.id);
+        const transaction5 = new TransactionHistory(null, null, wallet1.id);
         transaction5.transaction_amount = 50.00;
         transaction5.status = 'duplicate';
         transaction5.resulted_balance = wallet1.current_balance - transaction5.transaction_amount;
         transaction5.date = new Date();
         await transactionRepository.save(transaction5);
 
-        const transaction6 = new TransactionHistory(null, wallet2.id);
+        const transaction6 = new TransactionHistory(null, null, wallet2.id);
         transaction6.id_wallet = wallet1.id ?? -1;  // Linking to wallet1
         transaction6.transaction_amount = 150;
         transaction6.status = "successful";
@@ -113,7 +112,7 @@ export const seedDatabase = async () => {
         transaction6.date = new Date();
         await transactionRepository.save(transaction6);
 
-        const transaction7 = new TransactionHistory(null, wallet3.id);
+        const transaction7 = new TransactionHistory(null, null, wallet3.id);
         transaction7.id_wallet = wallet3.id ?? -1;  // Linking to wallet3
         transaction7.transaction_amount = 300;
         transaction7.status = "successful";
@@ -121,7 +120,7 @@ export const seedDatabase = async () => {
         transaction7.date = new Date();
         await transactionRepository.save(transaction7);
 
-        const transaction8 = new TransactionHistory(null, wallet4.id);
+        const transaction8 = new TransactionHistory(null, null, wallet4.id);
         transaction8.id_wallet = wallet5.id ?? -1;  // Linking to wallet4
         transaction8.transaction_amount = 2000;
         transaction8.status = "successful";
@@ -129,7 +128,7 @@ export const seedDatabase = async () => {
         transaction8.date = new Date();
         await transactionRepository.save(transaction8);
 
-        const transaction9 = new TransactionHistory(null, wallet5.id);
+        const transaction9 = new TransactionHistory(null, null, wallet5.id);
         transaction9.id_wallet = wallet5.id ?? -1;  // Linking to wallet5
         transaction9.transaction_amount = 2300;
         transaction9.status = "successful";

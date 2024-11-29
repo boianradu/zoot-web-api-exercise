@@ -40,7 +40,15 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
             res.status(202).send({ message: "Duplicate credit" });
             return
         }
+        if (status === 'created') {
+            res.status(201).send({ message: "Created credit" });
+            return
+        }
 
+        if (status === 'credited') {
+            res.status(202).send({ message: "Credited" });
+            return
+        }
         if (!updatedWallet) {
             res.status(404).send({ error: "Wallet not found" }); // 404 if wallet not found
             return
@@ -56,49 +64,51 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
     }
 });
 
-// POST /wallets/:id/debit - Debit wallet and return new balance
-// router.post("/wallets/:id/debit", async (req: Request, res: Response) => {
-//     try {
-//         const walletId = req.params.id;
-//         const { transactionId, amount } = req.body || {};
+// POST / wallets /: id / debit - Debit wallet and return new balance
+router.post("/wallets/:id/debit", async (req: Request, res: Response) => {
+    try {
+        const walletId = req.params.id;
+        const { transactionId, coins } = req.body || {};
 
-//         if (!transactionId || !amount) {
-//             res.status(400).send({ error: "Invalid request payload" }); // 400 if missing data
-//         }
+        if (!transactionId || !coins) {
+            res.status(400).send({ error: "Invalid request payload" }); // Return 400 if missing data
+            return
+        }
 
-//         const wallet = await controllerManager.getWallet(walletId);
+        // Attempt to debit the wallet
+        const [updatedWallet, status] = await controllerManager.debitWallet(walletId, transactionId, coins);
 
-//         if (!wallet) {
-//             res.status(404).send({ error: "Wallet not found" }); // 404 if wallet not found
-//             return
-//         }
+        if (status === 'duplicate') {
+            res.status(202).send({ message: "Duplicate debit" });
+            return
+        }
+        if (status === 'created') {
+            res.status(201).send({ message: "Created debit" });
+            return
+        }
 
-//         if (wallet.current_balance < amount) {
-//             res.status(400).send({ error: "Insufficient funds" }); // 400 if insufficient funds
-//             return
-//         }
+        if (status === 'debited') {
+            res.status(202).send({ message: "Debited" });
+            return
+        }
 
-//         // Debit the wallet
-//         const [updatedWallet, status] = await walletService.debitWallet(walletId, transactionId, amount);
+        if (status === 'error') {
+            res.status(400).send({ message: "Error debit" });
+            return
+        }
+        if (!updatedWallet) {
+            res.status(404).send({ error: "Wallet not found" }); // 404 if wallet not found
+            return
+        }
 
-//         if (!updatedWallet) {
-//             res.status(404).send({ error: "Wallet not found" }); // 404 if wallet not found
-//             return
-//         }
-
-//         // If this is a duplicate debit, return 202
-//         if (status === 'duplicate') {
-//             res.status(202).send({ message: "Duplicate debit" });
-//             return
-//         }
-
-//         // Return 201 when debit is successfully processed
-//         res.status(201).json(updatedWallet);
-//         return
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send({ error: "Internal Server Error" });
-//     }
-// });
+        // Return 201 when credit is successfully processed
+        res.status(201).json(updatedWallet);
+        return
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "Internal Server Error" });
+        return
+    }
+});
 
 export default router;

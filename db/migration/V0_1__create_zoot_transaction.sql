@@ -1,6 +1,7 @@
 -- Create the Transaction History table
 CREATE TABLE IF NOT EXISTS wallet.Transaction (
     id UUID NOT NULL PRIMARY KEY, -- unique 
+    t_id text NOT NULL, -- unique 
     id_wallet UUID NOT NULL, -- foreign key referencing Wallet.id
     date DATE NOT NULL DEFAULT CURRENT_DATE, -- date of the transaction
     transaction_amount FLOAT NOT NULL, -- transaction amount
