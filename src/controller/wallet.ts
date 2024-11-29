@@ -30,6 +30,10 @@ export class ControllerWallet {
             return null
         });
     }
+    async createWallet(walletId: string) {
+        let wallet = await this.currentWallet.createWallet()
+        return wallet;
+    }
 
     async creditWallet(wallet: Wallet, coins: number) {
         if (!wallet) return null;

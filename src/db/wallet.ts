@@ -7,6 +7,9 @@ export class WalletDB {
     constructor() {
 
     }
+    async createWallet(walletId: string): Promise<Wallet | null> {
+        return await this.wallet.create({ id: walletId });
+    }
     async findById(walletId: string): Promise<Wallet | null> {
         return await this.wallet.findOneBy({ id: walletId });
     }
