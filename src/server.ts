@@ -20,7 +20,7 @@ export class Server {
         const { port } = options;
         this.port = port;
         this.initializeRoutes()
-        // this.seedDB()
+        this.seedDB()
     }
 
     private seedDB() {

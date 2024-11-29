@@ -5,6 +5,7 @@ Requirements
 
 # How to run
 ## Start the services
+Create the .env file from the .env.example file
 ``` sh
 npm run db:run-create
 npm run db:run-start
