@@ -13,6 +13,7 @@
             "jest",
             "express"
         ],
+        "target": "ES6",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "baseUrl": "./",
@@ -21,7 +22,6 @@
                 "src/*"
             ]
         },
-        "target": "ESNext",
         "module": "CommonJS",
         "rootDir": "./src",
         "moduleResolution": "Node",

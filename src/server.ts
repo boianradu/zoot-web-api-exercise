@@ -2,6 +2,7 @@ import express from 'express';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { log } from './utils/logger'
+var bodyParser = require('body-parser')
 
 import router from "./routes/zoot.routes";
 import { seedDatabase } from "./db/data-seeding";
@@ -20,13 +21,14 @@ export class Server {
         const { port } = options;
         this.port = port;
         this.initializeRoutes()
-        this.seedDB()
+        // this.seedDB()
     }
 
     private seedDB() {
         seedDatabase().catch((error) => log(error));
     }
     private initializeRoutes() {
+        this.app.use(bodyParser.json());
         this.app.use(router)
     }
 
@@ -35,6 +37,7 @@ export class Server {
         this.app.use(express.json()); // parse json in request body (allow raw)
         this.app.use(express.urlencoded({ extended: true })); // allow x-www-form-urlencoded
         this.app.use(compression());
+
         //  limit repeated requests to public APIs
         this.app.use(
             rateLimit({

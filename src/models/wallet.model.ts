@@ -1,10 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { TransactionHistory } from "./transaction.model"; // Import the TransactionHistory entity
+import { randomUUID } from "crypto"
 
 @Entity()
 export class Wallet {
-    @PrimaryGeneratedColumn()
-    id?: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column()
     status: string; // "active" or "inactive"
@@ -25,7 +26,8 @@ export class Wallet {
     @OneToMany(() => TransactionHistory, (transaction) => transaction.id)
     transactions: TransactionHistory[] | undefined;
 
-    constructor(status: string = '', currency: number = 0, current_balance: number = 0) {
+    constructor(id: string | null = null, status: string = '', currency: number = 0, current_balance: number = 0) {
+        this.id = id ?? randomUUID()
         this.status = status;  // Default value for status
         this.currency = currency;  // Default value for currency
         this.current_balance = current_balance;  // Default value for balance

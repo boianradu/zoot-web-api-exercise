@@ -10,10 +10,10 @@ export class User {
     name: string;
 
     @ManyToOne(() => Wallet, (wallet) => wallet.transactions, { nullable: true, onDelete: "SET NULL" })
-    id_wallet: number | null;
+    id_wallet: string | null;
 
-    constructor(name: string = '', id_wallet: number | null = null) {
-        this.name = name;  // Default value for name (you can set a real value in practice)
+    constructor(name: string = '', id_wallet: string) {
+        this.name = name;
         this.id_wallet = id_wallet;  // Default to null if no wallet is set
     }
 }

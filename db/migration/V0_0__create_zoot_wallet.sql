@@ -1,6 +1,6 @@
 -- Create the Wallet table
 CREATE TABLE IF NOT EXISTS wallet.Wallet (
-    id SERIAL PRIMARY KEY, -- unique, auto-incrementing
+    id UUID NOT NULL PRIMARY KEY, -- unique 
     status text  CHECK (status IN ('active', 'inactive')), -- active/inactive
     currency text  NOT NULL, -- to store the type of currency (e.g., USD, EUR)
     current_balance FLOAT DEFAULT 0.0, -- current balance, defaulting to 0
