@@ -5,14 +5,10 @@ export class WalletDB {
     private wallet = AppDataSource.getRepository(Wallet);
 
     constructor() {
-
-    }
-    async cr(walletId: string): Promise<Wallet | null> {
-        return await this.wallet.create({ id: walletId });
     }
 
     async createWallet(walletId: string, coins: number): Promise<Wallet | null> {
-        const tr = new Wallet(walletId, "active", coins);
+        const tr = new Wallet(walletId, "active", "eur", coins);
         const wallet = await this.wallet.save(tr);
         if (!wallet) {
             return null

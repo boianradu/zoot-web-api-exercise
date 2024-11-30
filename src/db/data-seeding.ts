@@ -13,27 +13,27 @@ export const seedDatabase = async () => {
         const transactionRepository = AppDataSource.getRepository(TransactionHistory);
 
         // Insert Wallets
-        const wallet1 = new Wallet('1d4e7d81-ce9d-457b-b056-0f883baa783d', "active", 50, 500.00);
+        const wallet1 = new Wallet('1d4e7d81-ce9d-457b-b056-0f883baa783d', "active", "eur", 50);
         wallet1.date_creation = new Date();
         wallet1.date_update = new Date();
         await walletRepository.save(wallet1);
 
-        const wallet2 = new Wallet(null, "inactive", 20, 200.00);
+        const wallet2 = new Wallet(null, "inactive", "eur", 20);
         wallet2.date_creation = new Date();
         wallet2.date_update = new Date();
         await walletRepository.save(wallet2);
 
-        const wallet3 = new Wallet(null, "active", 100, 1000.00);
+        const wallet3 = new Wallet(null, "active", "eur", 100);
         wallet3.date_creation = new Date();
         wallet3.date_update = new Date();
         await walletRepository.save(wallet3);
 
-        const wallet4 = new Wallet(null, "inactive", 10, 50.00);
+        const wallet4 = new Wallet(null, "inactive", "eur", 10);
         wallet4.date_creation = new Date();
         wallet4.date_update = new Date();
         await walletRepository.save(wallet4);
 
-        const wallet5 = new Wallet(null, "active", 200, 5000.00);
+        const wallet5 = new Wallet(null, "active", "eur", 200);
         wallet5.date_creation = new Date();
         wallet5.date_update = new Date();
         await walletRepository.save(wallet5);

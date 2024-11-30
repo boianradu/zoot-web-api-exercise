@@ -10,14 +10,17 @@ export class Wallet {
     @Column()
     status: string; // "active" or "inactive"
 
-    @Column("float")
-    currency: number;
+    @Column("text")
+    currency: string;
 
     @Column("float")
     current_balance: number;
 
     @Column("date")
     date_creation: Date;
+
+    @Column("text")
+    version: number;
 
     @Column("date")
     date_update: Date;
@@ -26,12 +29,13 @@ export class Wallet {
     @OneToMany(() => TransactionHistory, (transaction) => transaction.id)
     transactions: TransactionHistory[] | undefined;
 
-    constructor(id: string | null = null, status: string = '', currency: number = 0, current_balance: number = 0) {
+    constructor(id: string | null = null, status: string = '', currency: string = "", current_balance: number = 0, version: number = 0) {
         this.id = id ?? randomUUID()
         this.status = status;  // Default value for status
         this.currency = currency;  // Default value for currency
         this.current_balance = current_balance;  // Default value for balance
         this.date_creation = new Date();  // Default to current date
         this.date_update = new Date();  // Default to current date 
+        this.version = version
     }
 }

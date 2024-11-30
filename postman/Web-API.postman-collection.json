@@ -40,12 +40,12 @@
                     }
                 ],
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}"
@@ -87,12 +87,12 @@
                     "raw": "{\n    \"transactionId\" : \"tx123\",\n    \"coins\" : 1000\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}/credit",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}/credit",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}",
@@ -132,12 +132,12 @@
                     }
                 ],
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}"
@@ -179,12 +179,12 @@
                     "raw": "{\n    \"transactionId\" : \"tx123\",\n    \"coins\" : 1000\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}/credit",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}/credit",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}",
@@ -224,15 +224,15 @@
                 ],
                 "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"transactionId\" : \"tx120\",\n    \"coins\" : 2000\n}"
+                    "raw": "{\n    \"transactionId\" : \"tx120\",\n    \"coins\" : 3000\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}/debit",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}/debit",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}",
@@ -275,12 +275,12 @@
                     "raw": "{\n    \"transactionId\" : \"tx124\",\n    \"coins\" : 456\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}/debit",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}/debit",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}",
@@ -323,12 +323,12 @@
                     "raw": "{\n    \"transactionId\" : \"tx124\",\n    \"coins\" : 456\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}/debit",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}/debit",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}",
@@ -368,12 +368,12 @@
                     }
                 ],
                 "url": {
-                    "raw": "http://localhost:8080/wallets/{{walletId}}",
+                    "raw": "http://localhost:3030/wallets/{{walletId}}",
                     "protocol": "http",
                     "host": [
                         "localhost"
                     ],
-                    "port": "8080",
+                    "port": "3030",
                     "path": [
                         "wallets",
                         "{{walletId}}"

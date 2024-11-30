@@ -42,6 +42,7 @@ export class ControllerWallet {
         if (!wallet) return null;
 
         wallet.current_balance += coins;
+        wallet.version += 1
 
         await this.currentWallet.update(wallet);
         return wallet;
@@ -52,6 +53,7 @@ export class ControllerWallet {
         if (!wallet) return null;
 
         wallet.current_balance -= coins;
+        wallet.version += 1
 
         await this.currentWallet.update(wallet);
 

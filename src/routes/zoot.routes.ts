@@ -9,13 +9,19 @@ const controllerManager = new ControllerManager();
 router.get("/wallets/:id", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
-        const wallet = await controllerManager.getWallet(walletId);
-
+        const [wallet, latestTransaction] = await controllerManager.getWallet(walletId);
         if (!wallet) {
             res.status(404).send({ error: "Wallet not found" });
-        } else {
-            res.status(200).json(wallet); // Return 200 OK with wallet balance
         }
+        let answer = {}
+        if (latestTransaction) {
+            answer = Object.assign({}, answer, { transactionId: latestTransaction.t_id });
+        }
+        answer = Object.assign({}, answer, { version: wallet.version });
+        answer = Object.assign({}, answer, { coins: wallet.coins });
+
+
+        res.status(200).json(answer); // Return 200 OK with wallet balance
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: "Internal Server Error" });
@@ -37,7 +43,7 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
         const [updatedWallet, status] = await controllerManager.creditWallet(walletId, transactionId, coins);
 
         if (status === 'duplicate') {
-            res.status(202).send({ message: "Duplicate credit" });
+            res.status(202).send({ message: "Duplicate" });
             return
         }
         if (status === 'created') {

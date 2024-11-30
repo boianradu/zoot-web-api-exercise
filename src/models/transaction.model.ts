@@ -9,9 +9,8 @@ export class TransactionHistory {
     @Column("text")
     t_id: string;
 
-    @ManyToOne(() => Wallet, (wallet) => wallet.transactions, { eager: true, onDelete: "SET NULL" })
-    @JoinColumn({ name: "id_wallet" })
-    id_wallet: string;
+    @ManyToOne(() => Wallet, (wallet) => wallet.transactions, { nullable: true, onDelete: "SET NULL" })
+    id_wallet: string | null; // This is the foreign key to the Wallet entity
 
     @Column("date")
     date: Date;
