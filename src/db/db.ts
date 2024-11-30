@@ -1,27 +1,32 @@
-import { DataSource } from "typeorm";
-import { Wallet } from "../models/wallet.model";
-import { User } from "../models/user.model";
-import { TransactionHistory } from "../models/transaction.model";
-import { envs } from "../core/config/env"
+import { PrismaClient } from '@prisma/client';
+import * as dotenv from 'dotenv';
 
-export const AppDataSource = new DataSource({
-    type: "postgres",
-    port: 5432,
-    username: envs.DB_USER,
-    password: envs.DB_PASS,
-    database: envs.DB_NAME,
-    host: envs.DB_HOST,
-    synchronize: true,
-    logging: false,
-    entities: [Wallet, User, TransactionHistory],
-    migrations: [],
-    subscribers: [],
+// Load environment variables from .env file
+dotenv.config();
+
+// Construct the database URL dynamically from environment variables
+const databaseUrl = `postgresql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}?schema=wallet`;
+
+// Initialize Prisma client
+const prisma = new PrismaClient({
+    datasources: {
+        db: {
+            url: databaseUrl,
+        },
+    },
 });
 
-AppDataSource.initialize()
-    .then(() => {
+// Handle database connection
+async function initialize() {
+    try {
+        await prisma.$connect();
         console.log("Data Source has been initialized!");
-    })
-    .catch((err) => {
-        console.error("Error during Data Source initialization:", err);
-    });
+    } catch (error) {
+        console.error("Error during Data Source initialization:", error);
+    }
+}
+
+// Initialize Prisma connection
+initialize();
+
+export { prisma };

@@ -9,18 +9,18 @@ export class ControllerManager {
         this.walletController = new ControllerWallet();
         this.transactionController = new ControllerTransaction();
     }
-    async getWallet(walletId: string) {
+    async getWalletDetails(walletId: string): Promise<[string, number, number]> {
         const wallet = await this.walletController.getWallet(walletId);
-        const latestTransaction = await this.transactionController.getLatestTransaction(walletId);
         if (!wallet) {
             console.log("wallet not found with id", walletId)
-            return [null, null]
+            return ["", -1, -1]
         }
+        const latestTransaction = await this.transactionController.getLatestTransaction(walletId);
         if (!latestTransaction) {
             console.log("no transactions yet on wallet", walletId)
-            return [null, latestTransaction]
+            return ["", wallet.version, wallet.current_balance]
         }
-        return [wallet, latestTransaction]
+        return [latestTransaction.t_id, wallet.version, wallet.current_balance]
 
     }
     async getWalletBalance(walletId: string) {

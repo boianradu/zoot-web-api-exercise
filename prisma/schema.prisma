@@ -1,0 +1,38 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // This will use a DATABASE_URL environment variable
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Wallet {
+  id              String       @id @default(uuid())
+  status          String
+  currency        String
+  version         Int
+  current_balance Float       @default(0)
+  date_creation   DateTime    @default(now())
+  date_update     DateTime    @updatedAt
+  users           User[]       // Relation field: this is the reverse relation to the User model
+  transactions    Transaction[] // Relation field: this is the reverse relation to the Transaction model
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String 
+  walletId String
+  wallet   Wallet @relation(fields: [walletId], references: [id])
+}
+
+model Transaction {
+  id              String   @id @default(uuid())
+  t_id            String
+  date            DateTime @default(now())
+  transaction_amount Float
+  status          String
+  resulted_balance Float
+  walletId        String
+  wallet           Wallet   @relation(fields: [walletId], references: [id])
+}

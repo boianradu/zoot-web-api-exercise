@@ -11,7 +11,7 @@ export class ControllerTransaction {
         return this.transaction.findById(transactionID);
     }
     async getLatestTransaction(walletId: string) {
-        const transaction = this.transaction.findLatestByWalletId(walletId);
+        const transaction = await this.transaction.findLatestByWalletId(walletId);
         if (!transaction) {
             return null
         }

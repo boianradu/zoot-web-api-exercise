@@ -5,7 +5,7 @@ import { log } from './utils/logger'
 var bodyParser = require('body-parser')
 
 import router from "./routes/zoot.routes";
-import { seedDatabase } from "./db/data-seeding";
+// import { seedDatabase } from "./db/data-seeding";
 import { ONE_HUNDRED, ONE_THOUSAND, SIXTY } from './core/constants';
 
 interface ServerOptions {
@@ -21,11 +21,11 @@ export class Server {
         const { port } = options;
         this.port = port;
         this.initializeRoutes()
-        // this.seedDB()
+        // this.seedDB()F
     }
 
     private seedDB() {
-        seedDatabase().catch((error) => log(error));
+        // seedDatabase().catch((error) => log(error));
     }
     private initializeRoutes() {
         this.app.use(bodyParser.json());

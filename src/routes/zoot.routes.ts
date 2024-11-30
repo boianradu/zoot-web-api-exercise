@@ -9,16 +9,8 @@ const controllerManager = new ControllerManager();
 router.get("/wallets/:id", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
-        const [wallet, latestTransaction] = await controllerManager.getWallet(walletId);
-        if (!wallet) {
-            res.status(404).send({ error: "Wallet not found" });
-        }
-        let answer = {}
-        if (latestTransaction) {
-            answer = Object.assign({}, answer, { transactionId: latestTransaction.t_id });
-        }
-        answer = Object.assign({}, answer, { version: wallet.version });
-        answer = Object.assign({}, answer, { coins: wallet.coins });
+        const [transactionId, version, coins] = await controllerManager.getWalletDetails(walletId);
+        let answer = { transactionId: transactionId, version: version, coins: coins }
 
 
         res.status(200).json(answer); // Return 200 OK with wallet balance

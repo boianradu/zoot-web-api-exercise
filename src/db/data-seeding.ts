@@ -1,145 +1,213 @@
-import { AppDataSource } from "./db";
-import { Wallet } from "../models/wallet.model";  // Adjust with the correct path
-import { User } from "../models/user.model";  // Adjust with the correct path
-import { TransactionHistory } from "../models/transaction.model";  // Adjust with the correct path 
-export const seedDatabase = async () => {
-    try {
-        // Initialize the data source
-        await AppDataSource.initialize();
+// import { PrismaClient } from "@prisma/client"; // Import PrismaClient
+// import { randomUUID } from "crypto";
 
+// const prisma = new PrismaClient();
 
-        const walletRepository = AppDataSource.getRepository(Wallet);
-        const userRepository = AppDataSource.getRepository(User);
-        const transactionRepository = AppDataSource.getRepository(TransactionHistory);
+// export const seedDatabase = async () => {
+//     try {
+//         // Insert Wallets
+//         const wallet1 = await prisma.wallet.create({
+//             data: {
+//                 id: '1d4e7d81-ce9d-457b-b056-0f883baa783d',
+//                 status: 'active',
+//                 currency: 'eur',
+//                 current_balance: 50,
+//                 date_creation: new Date(),
+//                 date_update: new Date(),
+//                 version: 1,
+//             },
+//         });
 
-        // Insert Wallets
-        const wallet1 = new Wallet('1d4e7d81-ce9d-457b-b056-0f883baa783d', "active", "eur", 50);
-        wallet1.date_creation = new Date();
-        wallet1.date_update = new Date();
-        await walletRepository.save(wallet1);
+//         const wallet2 = await prisma.wallet.create({
+//             data: {
+//                 status: 'inactive',
+//                 currency: 'eur',
+//                 current_balance: 20,
+//                 date_creation: new Date(),
+//                 date_update: new Date(),
+//                 version: 1,
+//             },
+//         });
 
-        const wallet2 = new Wallet(null, "inactive", "eur", 20);
-        wallet2.date_creation = new Date();
-        wallet2.date_update = new Date();
-        await walletRepository.save(wallet2);
+//         const wallet3 = await prisma.wallet.create({
+//             data: {
+//                 status: 'active',
+//                 currency: 'eur',
+//                 current_balance: 100,
+//                 date_creation: new Date(),
+//                 date_update: new Date(),
+//                 version: 1,
+//             },
+//         });
 
-        const wallet3 = new Wallet(null, "active", "eur", 100);
-        wallet3.date_creation = new Date();
-        wallet3.date_update = new Date();
-        await walletRepository.save(wallet3);
+//         const wallet4 = await prisma.wallet.create({
+//             data: {
+//                 status: 'inactive',
+//                 currency: 'eur',
+//                 current_balance: 10,
+//                 date_creation: new Date(),
+//                 date_update: new Date(),
+//                 version: 1,
+//             },
+//         });
 
-        const wallet4 = new Wallet(null, "inactive", "eur", 10);
-        wallet4.date_creation = new Date();
-        wallet4.date_update = new Date();
-        await walletRepository.save(wallet4);
+//         const wallet5 = await prisma.wallet.create({
+//             data: {
+//                 status: 'active',
+//                 currency: 'eur',
+//                 current_balance: 200,
+//                 date_creation: new Date(),
+//                 date_update: new Date(),
+//                 version: 1,
+//             },
+//         });
 
-        const wallet5 = new Wallet(null, "active", "eur", 200);
-        wallet5.date_creation = new Date();
-        wallet5.date_update = new Date();
-        await walletRepository.save(wallet5);
+//         console.log("Wallets created");
 
-        console.log("Wallets created");
+//         // Insert Users linked to the wallets
+//         const user1 = await prisma.user.create({
+//             data: {
+//                 name: 'John Doe',
+//                 wallet: { connect: { id: wallet1.id } },
+//             },
+//         });
 
-        // Insert Users linked to the wallets
-        const user1 = new User("John Doe", wallet1.id);
-        await userRepository.save(user1);
+//         const user2 = await prisma.user.create({
+//             data: {
+//                 name: 'Jane Doe',
+//                 wallet: { connect: { id: wallet2.id } },
+//             },
+//         });
 
-        const user2 = new User("Jane Doe", wallet2.id);
-        await userRepository.save(user2);
+//         const user3 = await prisma.user.create({
+//             data: {
+//                 name: 'Alice Smith',
+//                 wallet: { connect: { id: wallet3.id } },
+//             },
+//         });
 
-        const user3 = new User("Alice Smith", wallet3.id);
-        await userRepository.save(user3);
+//         const user4 = await prisma.user.create({
+//             data: {
+//                 name: 'Bob Johnson',
+//                 wallet: { connect: { id: wallet4.id } },
+//             },
+//         });
 
-        const user4 = new User("Bob Johnson", wallet4.id);
-        await userRepository.save(user4);
+//         const user5 = await prisma.user.create({
+//             data: {
+//                 name: 'Charlie Brown',
+//                 wallet: { connect: { id: wallet5.id } },
+//             },
+//         });
 
-        const user5 = new User("Charlie Brown", wallet5.id);
-        await userRepository.save(user5);
+//         console.log("Users created");
 
-        const user6 = new User("David Lee", wallet1.id);  // User 6 using the first wallet
-        await userRepository.save(user6);
+//         // Insert Transaction History records
+//         const transaction1 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet1.id } },
+//                 transaction_amount: 100.00,
+//                 status: 'completed',
+//                 resulted_balance: wallet1.current_balance + 100.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        const user7 = new User("Eva White", wallet2.id);  // User 7 using the second wallet
-        await userRepository.save(user7);
+//         const transaction2 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet1.id } },
+//                 transaction_amount: 100.00,
+//                 status: 'duplicate',
+//                 resulted_balance: wallet1.current_balance + 100.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        console.log("Users created");
+//         const transaction3 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet1.id } },
+//                 transaction_amount: 150.00,
+//                 status: 'pending',
+//                 resulted_balance: wallet1.current_balance - 150.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        // Insert Transaction History records// Create and insert transaction 1: Initial credit
-        const transaction1 = new TransactionHistory(null, null, wallet1.id);
-        transaction1.transaction_amount = 100.00;
-        transaction1.status = 'completed';
-        transaction1.resulted_balance = wallet1.current_balance + transaction1.transaction_amount;
-        transaction1.date = new Date();
-        await transactionRepository.save(transaction1);
+//         const transaction4 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet1.id } },
+//                 transaction_amount: 50.00,
+//                 status: 'completed',
+//                 resulted_balance: wallet1.current_balance - 50.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        // Create and insert transaction 2: Duplicate credit
-        const transaction2 = new TransactionHistory(null, null, wallet1.id);
-        transaction2.transaction_amount = 100.00;
-        transaction2.status = 'duplicate';
-        transaction2.resulted_balance = wallet1.current_balance + transaction2.transaction_amount;
-        transaction2.date = new Date();
-        await transactionRepository.save(transaction2);
+//         const transaction5 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet1.id } },
+//                 transaction_amount: 50.00,
+//                 status: 'duplicate',
+//                 resulted_balance: wallet1.current_balance - 50.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        // Create and insert transaction 3: Overdraft debit
-        const transaction3 = new TransactionHistory(null, null, wallet1.id);
-        transaction3.transaction_amount = 150.00;
-        transaction3.status = 'pending';
-        transaction3.resulted_balance = wallet1.current_balance - transaction3.transaction_amount;
-        transaction3.date = new Date();
-        await transactionRepository.save(transaction3);
+//         const transaction6 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet2.id } },
+//                 transaction_amount: 150.00,
+//                 status: 'successful',
+//                 resulted_balance: wallet2.current_balance + 150.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        // Create and insert transaction 4: Valid debit
-        const transaction4 = new TransactionHistory(null, null, wallet1.id);
-        transaction4.transaction_amount = 50.00;
-        transaction4.status = 'completed';
-        transaction4.resulted_balance = wallet1.current_balance - transaction4.transaction_amount;
-        transaction4.date = new Date();
-        await transactionRepository.save(transaction4);
+//         const transaction7 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet3.id } },
+//                 transaction_amount: 300.00,
+//                 status: 'successful',
+//                 resulted_balance: wallet3.current_balance + 300.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        // Create and insert transaction 5: Duplicate debit
-        const transaction5 = new TransactionHistory(null, null, wallet1.id);
-        transaction5.transaction_amount = 50.00;
-        transaction5.status = 'duplicate';
-        transaction5.resulted_balance = wallet1.current_balance - transaction5.transaction_amount;
-        transaction5.date = new Date();
-        await transactionRepository.save(transaction5);
+//         const transaction8 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet4.id } },
+//                 transaction_amount: 2000.00,
+//                 status: 'successful',
+//                 resulted_balance: wallet4.current_balance + 2000.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        const transaction6 = new TransactionHistory(null, null, wallet2.id);
-        transaction6.id_wallet = wallet1.id ?? -1;  // Linking to wallet1
-        transaction6.transaction_amount = 150;
-        transaction6.status = "successful";
-        transaction6.resulted_balance = wallet1.current_balance + transaction6.transaction_amount;
-        transaction6.date = new Date();
-        await transactionRepository.save(transaction6);
+//         const transaction9 = await prisma.transaction.create({
+//             data: {
+//                 t_id: randomUUID(),
+//                 wallet: { connect: { id: wallet5.id } },
+//                 transaction_amount: 2300.00,
+//                 status: 'successful',
+//                 resulted_balance: wallet5.current_balance + 2300.00,
+//                 date: new Date(),
+//             },
+//         });
 
-        const transaction7 = new TransactionHistory(null, null, wallet3.id);
-        transaction7.id_wallet = wallet3.id ?? -1;  // Linking to wallet3
-        transaction7.transaction_amount = 300;
-        transaction7.status = "successful";
-        transaction7.resulted_balance = wallet3.current_balance + transaction7.transaction_amount;
-        transaction7.date = new Date();
-        await transactionRepository.save(transaction7);
+//         console.log("Transaction History created");
 
-        const transaction8 = new TransactionHistory(null, null, wallet4.id);
-        transaction8.id_wallet = wallet5.id ?? -1;  // Linking to wallet4
-        transaction8.transaction_amount = 2000;
-        transaction8.status = "successful";
-        transaction8.resulted_balance = wallet5.current_balance + transaction8.transaction_amount;
-        transaction8.date = new Date();
-        await transactionRepository.save(transaction8);
-
-        const transaction9 = new TransactionHistory(null, null, wallet5.id);
-        transaction9.id_wallet = wallet5.id ?? -1;  // Linking to wallet5
-        transaction9.transaction_amount = 2300;
-        transaction9.status = "successful";
-        transaction9.resulted_balance = wallet5.current_balance + transaction9.transaction_amount;
-        transaction9.date = new Date();
-        await transactionRepository.save(transaction9);
-
-        console.log("Transaction History created");
-
-        console.log("Database seeding completed");
-    } catch (error) {
-        console.error("Error seeding the database:", error);
-    }
-}; 
+//         console.log("Database seeding completed");
+//     } catch (error) {
+//         console.error("Error seeding the database:", error);
+//     } finally {
+//         await prisma.$disconnect();
+//     }
+// };
