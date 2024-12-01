@@ -39,7 +39,7 @@ export class TransactionDB {
         return latestTransaction;
     }
 
-    async create(walletId: string, coins: number, transactionID: string | null): Promise<Transaction | null> {
+    async create(walletId: string, coins: number, transactionID: string | null, status: string): Promise<Transaction | null> {
         // First, fetch the current wallet balance (adjust according to your schema)
         const wallet = await prisma.wallet.findUnique({
             where: { id: walletId },
@@ -57,7 +57,7 @@ export class TransactionDB {
         // Create the transaction with the resulted_balance
         const transaction = await prisma.transaction.create({
             data: {
-                status: 'completed',
+                status: status,
                 t_id: transactionID || "",
                 date: new Date(),
                 transaction_amount: coins,

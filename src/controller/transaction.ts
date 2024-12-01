@@ -18,9 +18,9 @@ export class ControllerTransaction {
         return transaction;
     }
 
-    async createTransaction(walletId: string, coins: number, transactionID: string | null) {
+    async createTransaction(walletId: string, coins: number, transactionID: string | null, status: string) {
 
-        const transaction = await this.transaction.create(walletId, coins, transactionID)
+        const transaction = await this.transaction.create(walletId, coins, transactionID, status)
         if (!transaction) {
             return null
         }

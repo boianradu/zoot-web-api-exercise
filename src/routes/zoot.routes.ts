@@ -78,13 +78,14 @@ router.post("/wallets/:id/debit", async (req: Request, res: Response) => {
         if (status === 'error') {
             res.status(400).send({ message: "Error debit" });
             return
-        } else if (!updatedWallet) {
-            res.status(404).send({ error: "Wallet not found" }); // 404 if wallet not found
-            return
         } else if (status == "duplicate") {
             res.status(202).send({ message: "Duplicate debit" });
         } else if (status == "debited") {
             res.status(201).send({ message: "Duplicate debit" });
+        } else if (!updatedWallet) {
+            console.log("Wallet not found" + status)
+            res.status(404).send({ error: "Wallet not found" + status }); // 404 if wallet not found
+            return
         }
     } catch (error) {
         console.error(error);

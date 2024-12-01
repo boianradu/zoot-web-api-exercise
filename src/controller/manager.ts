@@ -20,7 +20,7 @@ export class ControllerManager {
             console.log("no transactions yet on wallet", walletId)
             return ["", wallet.version, wallet.current_balance]
         }
-        return [latestTransaction.t_id, wallet.version, latestTransaction.transaction_amount]
+        return [latestTransaction.t_id, wallet.version, wallet.current_balance]
 
     }
     async getWalletBalance(walletId: string) {
@@ -31,22 +31,22 @@ export class ControllerManager {
         let wallet = await this.walletController.getWallet(walletId);
         let finalStatus = "credited"
         if (!wallet) {
-            wallet = await this.walletController.createWallet(walletId, coins)
-            finalStatus = "created"
+            wallet = await this.walletController.createWallet(walletId)
+            if (wallet) {
+                finalStatus = "created"
+            } else {
+                return [null, "cannot create"]
+            }
         }
         if (transactionId) {
             let transaction = await this.transactionController.getTransactionById(transactionId);
             if (transaction) {
-                // return [null, 'duplicate'];
                 console.log("duplicate transaction ", transactionId, " for wallet ", walletId)
                 return [null, "duplicate"]
             } else {
                 console.log("created transaction ", transactionId, " for wallet ", walletId)
-                transaction = await this.transactionController.createTransaction(walletId, coins, transactionId);
+                transaction = await this.transactionController.createTransaction(walletId, coins, transactionId, "successful");
             }
-        }
-        if (!wallet) {
-            return [null, "cannot create"]
         }
         await this.walletController.creditWallet(wallet, coins);
         return [wallet, finalStatus];
@@ -56,23 +56,25 @@ export class ControllerManager {
     async debitWallet(walletId: string, transactionId: string | null, coins: number) {
         const wallet = await this.walletController.getWallet(walletId);
         if (!wallet) {
+            console.log("wallet not found with id:", walletId)
             return [null, "error"]
         }
         let status = "debited"
+        if (wallet.current_balance - coins < 0) {
+            return [wallet, "error"]
+        }
         if (transactionId) {
             let transaction = await this.transactionController.getTransactionById(transactionId);
             if (transaction) {
                 console.log("duplicate transaction ", transactionId, " for wallet ", walletId)
                 status = "duplicate"
+                return [null, "duplicate"]
             } else {
-                transaction = await this.transactionController.createTransaction(walletId, coins, transactionId);
+                transaction = await this.transactionController.createTransaction(walletId, coins, transactionId, "successful");
             }
         }
         if (!wallet) {
             return [null, "cannot create"]
-        }
-        if (wallet.current_balance - coins < 0) {
-            return [wallet, "error"]
         }
         await this.walletController.debitWallet(wallet, coins);
         return [wallet, status];

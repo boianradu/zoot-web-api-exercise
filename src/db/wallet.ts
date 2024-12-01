@@ -7,13 +7,13 @@ export class WalletDB {
 
     constructor() { }
 
-    async createWallet(walletId: string, coins: number): Promise<Wallet | null> {
+    async createWallet(walletId: string): Promise<Wallet | null> {
         const wallet = await prisma.wallet.create({
             data: {
                 id: walletId,
                 status: "active",
                 currency: "eur",
-                current_balance: coins,
+                current_balance: 0,
                 version: 0,
                 date_creation: new Date(),
                 date_update: new Date(),
@@ -30,13 +30,6 @@ export class WalletDB {
     }
 
     async update(wallet: Wallet): Promise<void> {
-        console.log("Wallet update:", {
-            status: wallet.status,
-            currency: wallet.currency,
-            current_balance: wallet.current_balance,
-            version: wallet.version,
-            date_update: new Date(),
-        })
         await prisma.wallet.update({
             where: { id: wallet.id },
             data: {
