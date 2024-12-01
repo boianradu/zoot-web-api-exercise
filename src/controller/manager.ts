@@ -13,14 +13,14 @@ export class ControllerManager {
         const wallet = await this.walletController.getWallet(walletId);
         if (!wallet) {
             console.log("wallet not found with id", walletId)
-            return ["", -1, -1]
+            return Promise.reject(new Error('Wallet not found'));
         }
         const latestTransaction = await this.transactionController.getLatestTransaction(walletId);
         if (!latestTransaction) {
             console.log("no transactions yet on wallet", walletId)
             return ["", wallet.version, wallet.current_balance]
         }
-        return [latestTransaction.t_id, wallet.version, wallet.current_balance]
+        return [latestTransaction.t_id, wallet.version, latestTransaction.transaction_amount]
 
     }
     async getWalletBalance(walletId: string) {
@@ -58,11 +58,12 @@ export class ControllerManager {
         if (!wallet) {
             return [null, "error"]
         }
+        let status = "debited"
         if (transactionId) {
             let transaction = await this.transactionController.getTransactionById(transactionId);
             if (transaction) {
-                // return [null, 'duplicate'];
-                console.log("created transaction ", transactionId, " for wallet ", walletId)
+                console.log("duplicate transaction ", transactionId, " for wallet ", walletId)
+                status = "duplicate"
             } else {
                 transaction = await this.transactionController.createTransaction(walletId, coins, transactionId);
             }
@@ -74,6 +75,6 @@ export class ControllerManager {
             return [wallet, "error"]
         }
         await this.walletController.debitWallet(wallet, coins);
-        return [wallet, "debited"];
+        return [wallet, status];
     }
 }

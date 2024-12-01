@@ -11,12 +11,10 @@ router.get("/wallets/:id", async (req: Request, res: Response) => {
         const walletId = req.params.id;
         const [transactionId, version, coins] = await controllerManager.getWalletDetails(walletId);
         let answer = { transactionId: transactionId, version: version, coins: coins }
-
-
         res.status(200).json(answer); // Return 200 OK with wallet balance
     } catch (error) {
         console.error(error);
-        res.status(500).send({ error: "Internal Server Error" });
+        res.status(404).send({ error: "No wallet found" });
     }
 });
 
@@ -34,12 +32,13 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
         // Attempt to credit the wallet
         const [updatedWallet, status] = await controllerManager.creditWallet(walletId, transactionId, coins);
 
-        if (status === 'duplicate') {
-            res.status(202).send({ message: "Duplicate" });
-            return
-        }
         if (status === 'created') {
             res.status(201).send({ message: "Created credit" });
+            return
+        }
+
+        if (status === 'duplicate') {
+            res.status(202).send({ message: "Duplicate" });
             return
         }
 
@@ -76,32 +75,17 @@ router.post("/wallets/:id/debit", async (req: Request, res: Response) => {
         // Attempt to debit the wallet
         const [updatedWallet, status] = await controllerManager.debitWallet(walletId, transactionId, coins);
 
-        if (status === 'duplicate') {
-            res.status(202).send({ message: "Duplicate debit" });
-            return
-        }
-        if (status === 'created') {
-            res.status(201).send({ message: "Created debit" });
-            return
-        }
-
-        if (status === 'debited') {
-            res.status(202).send({ message: "Debited" });
-            return
-        }
-
         if (status === 'error') {
             res.status(400).send({ message: "Error debit" });
             return
-        }
-        if (!updatedWallet) {
+        } else if (!updatedWallet) {
             res.status(404).send({ error: "Wallet not found" }); // 404 if wallet not found
             return
+        } else if (status == "duplicate") {
+            res.status(202).send({ message: "Duplicate debit" });
+        } else if (status == "debited") {
+            res.status(201).send({ message: "Duplicate debit" });
         }
-
-        // Return 201 when credit is successfully processed
-        res.status(201).json(updatedWallet);
-        return
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: "Internal Server Error" });

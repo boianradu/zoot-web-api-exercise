@@ -9,6 +9,9 @@ Create the .env file from the .env.example file
 ``` sh
 npm run db:run-create
 npm run db:run-start
+npm i
+npx prisma migrate dev --name init
+
 ```
 
 ## DB structure

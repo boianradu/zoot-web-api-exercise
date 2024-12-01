@@ -47,7 +47,8 @@ export class TransactionDB {
         });
 
         if (!wallet) {
-            throw new Error('Wallet not found');
+            // throw new Error('Wallet not found');
+            return null;
         }
 
         // Calculate the resulted balance
@@ -57,7 +58,7 @@ export class TransactionDB {
         const transaction = await prisma.transaction.create({
             data: {
                 status: 'completed',
-                t_id: randomUUID(),
+                t_id: transactionID || "",
                 date: new Date(),
                 transaction_amount: coins,
                 resulted_balance: resultedBalance,  // Add the calculated resulted_balance
