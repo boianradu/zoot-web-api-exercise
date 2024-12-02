@@ -15,7 +15,7 @@ describe('Transaction - empty', () => {
     });
 
     test('Get non-existing transaction', async () => {
-        const walletUUID = 'non-existing-uuid';
+        const walletUUID = '550e8400-e29b-41d4-a716-446655440000';
         const result = await transactionController.getTransactionById(walletUUID);
         expect(result).toEqual(null);
     });

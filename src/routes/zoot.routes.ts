@@ -2,6 +2,8 @@ import { Request, Response, Router } from "express";
 import { WalletManager } from "../controller/manager";
 import STATUSES from "../utils/statuses"
 
+import isUUID from "../utils/utils";
+
 
 const router = Router();
 const walletManager = new WalletManager();
@@ -10,6 +12,9 @@ const walletManager = new WalletManager();
 router.get("/wallets/:id", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
+        if (!isUUID(walletId)) {
+            res.status(500).send({ error: "Not accepting UUID" });
+        }
         const [transactionId, version, currentBalance] = await walletManager.getLatestDetails(walletId);
         const answer = { transactionId: transactionId, version: version, coins: currentBalance }
         res.status(200).json(answer);
@@ -23,6 +28,9 @@ router.get("/wallets/:id", async (req: Request, res: Response) => {
 router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
+        if (!isUUID(walletId)) {
+            res.status(500).send({ error: "Not accepting UUID" });
+        }
         const { transactionId, coins } = req.body || {};
 
         if (!transactionId || !coins) {
@@ -66,6 +74,9 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
 router.post("/wallets/:id/debit", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
+        if (!isUUID(walletId)) {
+            res.status(500).send({ error: "Not accepting UUID" });
+        }
         const { transactionId, coins } = req.body || {};
 
         if (!transactionId || !coins) {
