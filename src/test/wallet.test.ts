@@ -1,11 +1,9 @@
 import { ControllerWallet } from '../controller/wallet'
 import { randomUUID } from "crypto"
-import { Wallet } from '../models/wallet.model';
 
 describe('Wallet - empty', () => {
-    let walletController: ControllerWallet;
-    walletController = new ControllerWallet();
-    let walletUUID = randomUUID();
+    const walletController = new ControllerWallet();
+    const walletUUID = randomUUID();
     // let wallet = walletController.create(walletUUID);
 
     beforeEach(() => {
@@ -23,47 +21,46 @@ describe('Wallet - empty', () => {
     });
 
     test('Create wallet', async () => {
-        const res = walletController.create(walletUUID)
-        expect(res).toBeDefined
+        const wallet = await walletController.createWallet(walletUUID)
+        expect(wallet).toBeDefined()
     });
 
     test('Initial balance should be zero', async () => {
-        const initialBalance = walletController.getWallet(walletUUID)
-        expect(initialBalance).toBe(0);
+        const balance = await walletController.getBalance(walletUUID)
+        expect(balance).toBe(0);
     });
 
     test('Crediting increases the balance', async () => {
-        const wallet = walletController.getWallet(walletUUID)
-        expect(wallet).toBeDefined;
+        const wallet = await walletController.getWallet(walletUUID)
         if (wallet == null) {
             return
         } else {
-            const creditW = walletController.creditWallet(wallet, 100)
+            expect(wallet).toBeDefined();
+            const creditW = await walletController.creditWallet(wallet, 100)
+            expect(creditW).toBeDefined();
+            expect(await walletController.getBalance(walletUUID)).toBe(100);
         }
-        expect(wallet.getBalance()).toBe(100);
     });
 
-    // test('Debiting decreases the balance', () => {
-    //     wallet.credit(100);
-    //     wallet.debit(50);
-    //     expect(wallet.getBalance()).toBe(50);
-    // });
+    test('Debiting decreases the balance', async () => {
+        const wallet = await walletController.getWallet(walletUUID)
+        if (wallet == null) {
+            return
+        } else {
+            const debit = await walletController.debitWallet(wallet, 50);
+            expect(debit).toBeDefined();
+            expect(await walletController.getBalance(walletUUID)).toBe(50);
+        }
+    });
 
-    // test('Debiting more than the balance throws an error', () => {
-    //     wallet.credit(50);
-    //     expect(() => wallet.debit(100)).toThrow(STATUSES.ERROR);
-    // });
+    test('Debiting more than the balance throws an error', async () => {
+        const wallet = await walletController.getWallet(walletUUID)
+        if (wallet == null) {
+            return
+        } else {
+            const debit = await walletController.debitWallet(wallet, 500);
+            expect(debit).toEqual(false);
+        }
+    });
 
-    // test('Operations are idempotent', () => {
-    //     wallet.credit(100, 'txn1');
-    //     wallet.credit(100, 'txn1'); // Retry same transaction
-    //     expect(wallet.getBalance()).toBe(100);
-    // });
-
-    // test('Idempotency works for debit operations', () => {
-    //     wallet.credit(100);
-    //     wallet.debit(50, 'txn2');
-    //     wallet.debit(50, 'txn2'); // Retry same transaction
-    //     expect(wallet.getBalance()).toBe(50);
-    // });
 });

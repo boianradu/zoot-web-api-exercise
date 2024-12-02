@@ -10,7 +10,7 @@ router.get("/wallets/:id", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
         const [transactionId, version, coins] = await walletManager.getLatestDetails(walletId);
-        let answer = { transactionId: transactionId, version: version, coins: coins }
+        const answer = { transactionId: transactionId, version: version, coins: coins }
         res.status(200).json(answer); // Return 200 OK with wallet balance
     } catch (error) {
         console.error(error);

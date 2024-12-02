@@ -45,6 +45,16 @@ export class WalletDB {
         return { success: true, data: wallet };
     }
 
+    async getWalletBalance(walletId: string): Promise<Result<number>> {
+        const wallet = await prisma.wallet.findFirst({
+            where: { id: walletId },
+            orderBy: { date_creation: 'desc' }
+        });
+        if (wallet === null) {
+            return { success: false, error: `Couldn't find wallet with id: ${walletId}` };
+        }
+        return { success: true, data: wallet.current_balance };
+    }
     async update(wallet: Wallet): Promise<boolean> {
         try {
             const updateWallet = await prisma.wallet.update({
