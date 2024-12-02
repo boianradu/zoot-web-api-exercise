@@ -8,7 +8,9 @@ export class ControllerWallet {
         this.wallet = new WalletDB()
     }
 
-
+    /*
+        returns wallet by walletId if found or null
+    */
     async getWallet(walletId: string): Promise<Wallet | null> {
         try {
             const walletResult = await this.wallet.findById(walletId);
@@ -26,6 +28,10 @@ export class ControllerWallet {
         }
     }
 
+    /*
+        creates wallet with specified id
+        returns wallet if created succesfully or null
+    */
     async createWallet(walletId: string): Promise<Wallet | null> {
         try {
             const walletResult = await this.wallet.create(walletId)
@@ -43,6 +49,10 @@ export class ControllerWallet {
         }
     }
 
+    /*
+        returns the ballance of a wallet by walletID or null if
+        it is not found
+    */
     async getBalance(walletId: string): Promise<number | null> {
         try {
             const walletResult = await this.wallet.findById(walletId);
@@ -60,6 +70,9 @@ export class ControllerWallet {
         }
     }
 
+    /*
+        credits an existing walelt by a specific number of coins
+    */
     async creditWallet(wallet: Wallet, coins: number) {
         if (!wallet) return null;
 
@@ -73,6 +86,9 @@ export class ControllerWallet {
         return false;
     }
 
+    /*
+        debits  an existing walelt by a specific number of coins
+    */
     async debitWallet(wallet: Wallet, coins: number) {
 
         if (!wallet) return null;

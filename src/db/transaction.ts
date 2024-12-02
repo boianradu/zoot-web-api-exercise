@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 
 export class TransactionDB {
 
+    /*
+        returns transaction by TransactionID
+    */
     async findById(transactionId: string): Promise<Result<Transaction>> {
         try {
             const transaction = await prisma.transaction.findFirst({
@@ -27,6 +30,9 @@ export class TransactionDB {
         }
     }
 
+    /*
+        returns the latest transaction of a wallet by wallet id
+    */
     async findLatestByWalletId(walletId: string): Promise<Result<Transaction>> {
         try {
             const transaction = await prisma.transaction.findFirst({
@@ -49,6 +55,17 @@ export class TransactionDB {
         }
     }
 
+    /*
+        creates a transactionby
+        walletId - wallet id
+        coins - number of coins deducted or added
+        transactionID - string of a transaction if passed, null otherwise
+        status - status of the transaction
+
+        returns
+            success - true if transaction was created, error otherwise
+            transaction
+    */
     async create(walletId: string, coins: number, transactionID: string | null, status: string): Promise<Result<Transaction>> {
         try {
             const wallet = await prisma.wallet.findFirst({

@@ -8,6 +8,9 @@ export class ControllerTransaction {
         this.transaction = new TransactionDB();
     }
 
+    /*
+        returns a transaction by transactionID if exists or null
+    */
     async getTransactionById(transactionID: string): Promise<Transaction | null> {
         try {
             const transactionResult = await this.transaction.findById(transactionID);
@@ -25,6 +28,9 @@ export class ControllerTransaction {
         }
     }
 
+    /*
+        returns the latests transaction by walletId if exists or null
+    */
     async getLatestTransaction(walletId: string): Promise<Transaction | null> {
         try {
             const transactionResult = await this.transaction.findLatestByWalletId(walletId);
@@ -42,6 +48,10 @@ export class ControllerTransaction {
         }
     }
 
+    /*
+        creates transaction by walletID, coins and transacstion id if defined + status
+        returns the transasction if it is successful or null if not
+    */
     async createTransaction(walletId: string, coins: number, transactionID: string | null, status: string): Promise<Transaction | null> {
         try {
             const transactionResult = await this.transaction.create(walletId, coins, transactionID, status)

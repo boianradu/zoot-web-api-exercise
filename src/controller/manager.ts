@@ -1,4 +1,5 @@
 import { ControllerWallet } from "./wallet";
+import STATUSES from '../utils/statuses';
 import { ControllerTransaction } from "./transaction";
 export class WalletManager {
     private walletController: ControllerWallet;
@@ -9,31 +10,40 @@ export class WalletManager {
         this.transactionController = new ControllerTransaction();
     }
 
+    /*
+        credits wallet if the wallet is found by id
+        if a transaction is defined and found, it is considered duplicate
 
+        walletId - the id of the wallet
+        transaction - the transaction to be credited to the wallet
+        coins - the coins to be credited to the wallet
+
+        returns:
+            boolean - status true or false
+            string - message
+    */
     async creditWallet(walletId: string, transactionId: string | null, coins: number): Promise<[boolean, string]> {
         let wallet = await this.walletController.getWallet(walletId);
-        let finalStatus = "credited"
+        let finalStatus = STATUSES.CREDITED
         if (!wallet) {
             wallet = await this.walletController.createWallet(walletId)
             if (wallet) {
-                finalStatus = "created"
+                finalStatus = STATUSES.CREATED
             } else {
-                return [false, "cannot create"]
+                return [false, STATUSES.CANNOT_CREATE]
             }
         }
         if (transactionId) {
             let transaction = await this.transactionController.getTransactionById(transactionId);
             if (transaction) {
-                console.log("duplicate transaction ", transactionId, " for wallet ", walletId)
-                return [false, "duplicate"]
+                return [false, STATUSES.DUPLICATE]
             } else {
-                console.log("created transaction ", transactionId, " for wallet ", walletId)
                 transaction = await this.transactionController.createTransaction(walletId, coins, transactionId, "successful");
 
                 if (transaction != null) {
-                    finalStatus = "created"
+                    finalStatus = STATUSES.CREATED
                 } else {
-                    return [false, "cannot create transaction"]
+                    return [false, STATUSES.CANNOT_CREATE]
                 }
             }
         }
@@ -41,33 +51,43 @@ export class WalletManager {
         if (result) {
             return [true, finalStatus];
         } else {
-            return [false, "couldn't credit" + walletId]
+            return [false, STATUSES.CANNOT_CREATE]
         }
     }
 
+    /*
+        debits wallet if the wallet is found by id and the coins to be extracted
+        are less than the balance existed
+        if a transaction is defined and found, it is considered duplicate
 
+        walletId - the id of the wallet
+        transaction - the transaction to be credited to the wallet
+        coins - the coins to be credited to the wallet
+
+        returns:
+            boolean - status true or false
+            string - message
+    */
     async debitWallet(walletId: string, transactionId: string | null, coins: number): Promise<[boolean, string]> {
         const wallet = await this.walletController.getWallet(walletId);
         if (!wallet) {
-            console.log("wallet not found with id:", walletId)
-            return [false, "error"]
+            return [false, STATUSES.ERROR]
         }
-        let status = "debited"
+        let status = STATUSES.DEBITED
         if (wallet.current_balance - coins < 0) {
-            return [false, "error"]
+            return [false, STATUSES.ERROR]
         }
         if (transactionId) {
             let transaction = await this.transactionController.getTransactionById(transactionId);
             if (transaction) {
-                console.log("duplicate transaction ", transactionId, " for wallet ", walletId)
-                status = "duplicate"
-                return [false, "duplicate"]
+                status = STATUSES.DUPLICATE
+                return [false, STATUSES.DUPLICATE]
             } else {
                 transaction = await this.transactionController.createTransaction(walletId, coins, transactionId, "successful");
             }
         }
         if (!wallet) {
-            return [false, "cannot create"]
+            return [false, STATUSES.ERROR]
         }
         await this.walletController.debitWallet(wallet, coins);
         return [true, status];
@@ -76,12 +96,10 @@ export class WalletManager {
     async getLatestDetails(walletId: string): Promise<[string, number, number]> {
         const wallet = await this.walletController.getWallet(walletId);
         if (!wallet) {
-            console.log("wallet not found with id", walletId)
             return Promise.reject(new Error('Wallet not found'));
         }
         const latestTransaction = await this.transactionController.getLatestTransaction(walletId);
         if (!latestTransaction) {
-            console.log("no transactions yet on wallet", walletId)
             return ["", wallet.version, wallet.current_balance]
         }
         return [latestTransaction.t_id, wallet.version, wallet.current_balance]

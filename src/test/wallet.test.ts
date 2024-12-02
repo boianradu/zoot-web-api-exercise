@@ -4,10 +4,8 @@ import { randomUUID } from "crypto"
 describe('Wallet - empty', () => {
     const walletController = new ControllerWallet();
     const walletUUID = randomUUID();
-    // let wallet = walletController.create(walletUUID);
 
     beforeEach(() => {
-        // Reset mock before each test 
     });
 
     test('Get non-existing wallet', async () => {

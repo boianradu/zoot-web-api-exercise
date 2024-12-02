@@ -1,24 +1,25 @@
 import { Request, Response, Router } from "express";
-// import { ControllerWallet } from "../controller/wallet";
 import { WalletManager } from "../controller/manager";
+import STATUSES from "../utils/statuses"
 
 
 const router = Router();
 const walletManager = new WalletManager();
 
+// GET /wallets returns wallet (latest transaciton, version and currentBalance) by WalletID if exists
 router.get("/wallets/:id", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
-        const [transactionId, version, coins] = await walletManager.getLatestDetails(walletId);
-        const answer = { transactionId: transactionId, version: version, coins: coins }
-        res.status(200).json(answer); // Return 200 OK with wallet balance
+        const [transactionId, version, currentBalance] = await walletManager.getLatestDetails(walletId);
+        const answer = { transactionId: transactionId, version: version, coins: currentBalance }
+        res.status(200).json(answer);
     } catch (error) {
         console.error(error);
         res.status(404).send({ error: "No wallet found" });
     }
 });
 
-// POST /wallets/:id/credit - Credit wallet and return new balance
+//  Credit wallet and return new balance
 router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
@@ -32,18 +33,18 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
         // Attempt to credit the wallet
         const [updatedWallet, status] = await walletManager.creditWallet(walletId, transactionId, coins);
         console.log("Status for crediting:", walletId, status)
-        if (status === 'created') {
-            res.status(201).send({ message: "Created credit" });
+        if (status === STATUSES.CREATED) {
+            res.status(201).send({ message: STATUSES.CREATED });
             return
         }
 
-        if (status === 'duplicate') {
-            res.status(202).send({ message: "Duplicate" });
+        if (status === STATUSES.DUPLICATE) {
+            res.status(202).send({ message: STATUSES.DUPLICATE });
             return
         }
 
-        if (status === 'credited') {
-            res.status(202).send({ message: "Credited" });
+        if (status === STATUSES.CREDITED) {
+            res.status(202).send({ message: STATUSES.CREDITED });
             return
         }
         if (!updatedWallet) {
@@ -61,7 +62,7 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
     }
 });
 
-// POST / wallets /: id / debit - Debit wallet and return new balance
+//   Debit wallet and return new balance
 router.post("/wallets/:id/debit", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;

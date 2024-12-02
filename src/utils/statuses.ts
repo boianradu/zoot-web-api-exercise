@@ -3,6 +3,8 @@ const STATUSES = {
     CREATED: "created",
     DUPLICATE: "duplicate",
     ERROR: "error",
-} as const;
+    CANNOT_CREATE: "cannot create",
+    DEBITED: "debited"
+};
 
 export default STATUSES;

@@ -8,6 +8,11 @@ export class WalletDB {
 
     constructor() { }
 
+    /*
+        create wallet with walletID
+
+        considers status active and currency eur, can be changed in the future
+    */
     async create(walletId: string): Promise<Result<Wallet>> {
         try {
             const wallet = await prisma.wallet.create({
@@ -34,6 +39,10 @@ export class WalletDB {
             return { success: false, error: `Couldn't find wallet with id: ${walletId}` };
         };
     }
+
+    /*
+        returns wallet with walletID
+    */
     async findById(walletId: string): Promise<Result<Wallet>> {
         const wallet = await prisma.wallet.findFirst({
             where: { id: walletId },
@@ -45,6 +54,9 @@ export class WalletDB {
         return { success: true, data: wallet };
     }
 
+    /*
+        returns current wallet balance by walletId
+    */
     async getWalletBalance(walletId: string): Promise<Result<number>> {
         const wallet = await prisma.wallet.findFirst({
             where: { id: walletId },
@@ -55,6 +67,10 @@ export class WalletDB {
         }
         return { success: true, data: wallet.current_balance };
     }
+
+    /*
+            updates a wallet with the wallet details and by its walletId
+    */
     async update(wallet: Wallet): Promise<boolean> {
         try {
             const updateWallet = await prisma.wallet.update({

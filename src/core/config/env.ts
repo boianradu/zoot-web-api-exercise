@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { get } from 'env-var';
-
+// ENV variables to connect to the DB
 export const envs = {
     PORT: get('PORT').required().asPortNumber(),
     API_PREFIX: get('DEFAULT_API_PREFIX').default('/').asString(),
