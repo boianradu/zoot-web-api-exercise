@@ -27,32 +27,21 @@ describe('Wallet - empty', () => {
         expect(res).toBeDefined
     });
 
-    //     const walletId = walletUUID;
+    test('Initial balance should be zero', async () => {
+        const initialBalance = walletController.getWallet(walletUUID)
+        expect(initialBalance).toBe(0);
+    });
 
-    //     // Prepare mock return value
-    //     const mockWallet = {
-    //         id: walletId,
-    //         status: 'active',
-    //         currency: 'USD',
-    //         current_balance: 0,
-    //         version: 0,
-    //         date_update: new Date(),
-    //     };
-
-    //     // Call the method
-    //     const result = await walletController.create(walletId);
-    //     expect(result).toBe(mockWallet);
-
-    // });
-
-    // test('Initial balance should be zero', () => {
-    //     expect(walletController.getWallet(walletUUID)).toBe(0);
-    // });
-
-    // test('Crediting increases the balance', () => {
-    //     wallet.cre(wallet.createWallet, 100);
-    //     expect(wallet.getBalance()).toBe(100);
-    // });
+    test('Crediting increases the balance', async () => {
+        const wallet = walletController.getWallet(walletUUID)
+        expect(wallet).toBeDefined;
+        if (wallet == null) {
+            return
+        } else {
+            const creditW = walletController.creditWallet(wallet, 100)
+        }
+        expect(wallet.getBalance()).toBe(100);
+    });
 
     // test('Debiting decreases the balance', () => {
     //     wallet.credit(100);
