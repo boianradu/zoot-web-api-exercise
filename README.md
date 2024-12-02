@@ -47,7 +47,7 @@ newman run ./postman/Web-API.postman-collection.json
 | id_wallets  | INT       | Foreign key to `Wallet.id`     |
 
 
-### Transaction history
+### Transaction 
 | Column Name        | Data Type | Description                                |
 |--------------------|-----------|--------------------------------------------|
 | id                 | INT       | Unique, auto-incrementing ID               |
