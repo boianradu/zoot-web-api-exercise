@@ -12,5 +12,6 @@ export const envs = {
     DB_USER: get('DB_USER').default('postgres').asString(),
     DB_PASS: get('DB_PASS').default('postgres').asString(),
     DB_NAME: get('DB_DATABASE').asString(),
+    DB_URL: get('DATABASE_URL').asString(),
 
 };

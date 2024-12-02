@@ -1,15 +1,15 @@
 import { Request, Response, Router } from "express";
 // import { ControllerWallet } from "../controller/wallet";
-import { ControllerManager } from "../controller/manager";
+import { WalletManager } from "../controller/manager";
 
 
 const router = Router();
-const controllerManager = new ControllerManager();
+const walletManager = new WalletManager();
 
 router.get("/wallets/:id", async (req: Request, res: Response) => {
     try {
         const walletId = req.params.id;
-        const [transactionId, version, coins] = await controllerManager.getWalletDetails(walletId);
+        const [transactionId, version, coins] = await walletManager.getLatestDetails(walletId);
         let answer = { transactionId: transactionId, version: version, coins: coins }
         res.status(200).json(answer); // Return 200 OK with wallet balance
     } catch (error) {
@@ -30,8 +30,8 @@ router.post("/wallets/:id/credit", async (req: Request, res: Response) => {
         }
 
         // Attempt to credit the wallet
-        const [updatedWallet, status] = await controllerManager.creditWallet(walletId, transactionId, coins);
-
+        const [updatedWallet, status] = await walletManager.creditWallet(walletId, transactionId, coins);
+        console.log("Status for crediting:", walletId, status)
         if (status === 'created') {
             res.status(201).send({ message: "Created credit" });
             return
@@ -73,7 +73,7 @@ router.post("/wallets/:id/debit", async (req: Request, res: Response) => {
         }
 
         // Attempt to debit the wallet
-        const [updatedWallet, status] = await controllerManager.debitWallet(walletId, transactionId, coins);
+        const [updatedWallet, status] = await walletManager.debitWallet(walletId, transactionId, coins);
 
         if (status === 'error') {
             res.status(400).send({ message: "Error debit" });

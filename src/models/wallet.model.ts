@@ -4,9 +4,9 @@ export class Wallet {
     id: string;
     status: string;
     currency: string;
+    version: number;
     current_balance: number;
     date_creation: Date;
-    version: number;
     date_update: Date;
     transactions?: Transaction[];
 
