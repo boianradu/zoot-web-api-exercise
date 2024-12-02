@@ -63,5 +63,7 @@ newman run ./postman/Web-API.postman-collection.json
 ## APIs endpoints
 
 /wallets/:id
+
 /wallets/:id/credit
+
 /wallets/:id/debit
