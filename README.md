@@ -39,7 +39,7 @@ newman run ./postman/Web-API.postman-collection.json
 | date_update       | DATE      | Date of the last update |
 
 
-### User
+### User - currently not used
 | Column Name | Data Type | Description                     |
 |-------------|-----------|---------------------------------|
 | id          | INT       | Unique, auto-incrementing ID    |
