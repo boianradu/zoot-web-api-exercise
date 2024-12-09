@@ -10,7 +10,7 @@ function main(): void {
     log("Starting ZOOOOOOOT")
     const server = new Server({
         port: envs.PORT,
-        apiPrefix: ""// empty string means no prefix
+        apiPrefix: ""
     });
     void server.start();
 }

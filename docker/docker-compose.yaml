@@ -1,0 +1,43 @@
+version: '3.8'
+name: zoot
+services:
+    app:
+        image: zoot:latest
+        build:
+            context: ..
+            dockerfile: Dockerfile
+        container_name: node_app
+        restart: always
+        ports:
+            - "3000:3000" # Expose app on port 3000
+        environment:
+            - DATABASE_URL=postgresql://postgres:password@db:5432/db_zoot_dc
+        depends_on:
+            - db
+
+    db:
+        image: postgres:15
+        container_name: db_zoot_dc
+        restart: always
+        ports:
+            - "5432:5432" # Expose database on port 5432
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: db_zoot_dc
+        volumes:
+            - db:/var/lib/postgresql/data
+
+    proxy:
+        image: nginx:latest
+        container_name: nginx_proxy
+        restart: always
+        ports:
+            - "80:80" # Expose proxy on port 80
+        volumes:
+            - H:\Dev\zoot-web-api-exercise\docker\nginx.config:/etc/nginx/nginx.conf:ro # Mount NGINX config
+        depends_on:
+            - app
+
+volumes:
+    db:

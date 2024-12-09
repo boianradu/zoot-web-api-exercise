@@ -72,7 +72,13 @@ export class WalletDB {
             updates a wallet with the wallet details and by its walletId
     */
     async update(wallet: Wallet): Promise<boolean> {
+        // new transaction
+        //  add wallet  pdate
+        // add transaction update
+
+
         try {
+            // 1 locker
             const updateWallet = await prisma.wallet.update({
                 where: { id: wallet.id },
                 data: {
@@ -83,6 +89,8 @@ export class WalletDB {
                     date_update: new Date(),
                 }
             });
+            // 2 access resource
+            // return specific error
             console.log("Wallet updated:", updateWallet);
             return true
         } catch (error) {

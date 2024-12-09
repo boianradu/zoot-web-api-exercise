@@ -34,5 +34,6 @@ model Transaction {
   status          String
   resulted_balance Float
   walletId        String
+  details String @default("")
   wallet           Wallet   @relation(fields: [walletId], references: [id])
 }

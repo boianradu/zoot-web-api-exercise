@@ -33,27 +33,25 @@ export class WalletManager {
                 return [false, STATUSES.CANNOT_CREATE]
             }
         }
-        if (transactionId) {
-            let transaction = await this.transactionController.getTransactionById(transactionId);
-            if (transaction) {
-                return [false, STATUSES.DUPLICATE]
-            } else {
-                transaction = await this.transactionController.createTransaction(walletId, coins, transactionId, "successful");
+        let transaction = await this.transactionController.getTransactionById(transactionId);
+        if (transaction) {
+            return [false, STATUSES.DUPLICATE]
+        } else {
+            transaction = await this.transactionController.createTransaction(walletId, coins, transactionId, "successful");
 
-                if (transaction != null) {
-                    finalStatus = STATUSES.CREATED
-                } else {
-                    return [false, STATUSES.CANNOT_CREATE]
-                }
+            if (transaction != null) {
+                finalStatus = STATUSES.CREATED
+            } else {
+                return [false, STATUSES.CANNOT_CREATE]
+            }
+            const result = await this.walletController.creditWallet(wallet, coins);
+            if (result) {
+                return [true, finalStatus];
+            } else {
+                // 4 update transactrion status
+                return [false, STATUSES.CANNOT_CREATE]
             }
         }
-        const result = await this.walletController.creditWallet(wallet, coins);
-        if (result) {
-            return [true, finalStatus];
-        } else {
-            return [false, STATUSES.CANNOT_CREATE]
-        }
-    }
 
     /*
         debits wallet if the wallet is found by id and the coins to be extracted
@@ -68,13 +66,13 @@ export class WalletManager {
             boolean - status true or false
             string - message
     */
-    async debitWallet(walletId: string, transactionId: string | null, coins: number): Promise<[boolean, string]> {
-        const wallet = await this.walletController.getWallet(walletId);
-        if (!wallet) {
-            return [false, STATUSES.ERROR]
-        }
+    async debitWallet(walletId: string, transactionId: string | null, coins: number): Promise < [boolean, string] > {
+            const wallet = await this.walletController.getWallet(walletId);
+            if(!wallet) {
+                return [false, STATUSES.ERROR]
+            }
         let status = STATUSES.DEBITED
-        if (wallet.current_balance - coins < 0) {
+        if(wallet.current_balance - coins < 0) {
             return [false, STATUSES.ERROR]
         }
         if (transactionId) {

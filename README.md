@@ -26,6 +26,13 @@ newman run ./postman/Web-API.postman-collection.json
 
 ```
 
+Create a migration 
+``` sh
+npx prisma migrate dev --name <transaction name>
+npx prisma migrate deploy
+
+```
+
 ## DB structure
 ### Wallet
 | Column Name       | Data Type | Description             |
