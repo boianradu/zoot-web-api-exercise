@@ -46,7 +46,7 @@ npx prisma migrate deploy
 | date_update       | DATE      | Date of the last update |
 
 
-### User
+### User - currently not used
 | Column Name | Data Type | Description                     |
 |-------------|-----------|---------------------------------|
 | id          | INT       | Unique, auto-incrementing ID    |
@@ -54,7 +54,7 @@ npx prisma migrate deploy
 | id_wallets  | INT       | Foreign key to `Wallet.id`     |
 
 
-### Transaction history
+### Transaction 
 | Column Name        | Data Type | Description                                |
 |--------------------|-----------|--------------------------------------------|
 | id                 | INT       | Unique, auto-incrementing ID               |
