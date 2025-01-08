@@ -55,6 +55,31 @@ export class TransactionDB {
         }
     }
 
+     /*
+        returns the latest transaction of a wallet by wallet id
+    */
+        async updateStatus(walletId: string, transactionId: string): Promise<Result<Transaction>> {
+            try {
+                const transaction = await prisma.transaction.findFirst({
+                    where: { walletId: walletId },
+                    orderBy: { date: 'desc' }
+                });
+                if (transaction === null) {
+                    console.log("Transaction not found:", transaction);
+                    return { success: false, error: `Couldn't  transaction by wallet id: ${walletId}` };
+                }
+                console.log("Transaction found:", transaction);
+                return { success: true, data: transaction };
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.error("Transaction not found:", error.message);
+                } else {
+                    console.error("An unknown error occurred");
+                }
+                return { success: false, error: `Couldn't  transaction by wallet id: ${walletId}` };
+            }
+        }
+
     /*
         creates a transactionby
         walletId - wallet id

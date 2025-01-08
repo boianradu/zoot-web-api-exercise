@@ -80,6 +80,7 @@ export class ControllerWallet {
         wallet.version += 1
 
         const updated = await this.wallet.update(wallet);
+        // 3 get returned resource access
         if (updated) {
             return true
         }

@@ -70,3 +70,14 @@ export class ControllerTransaction {
     }
 
 }
+
+
+/*
+    Transaction 
+
+    123
+    300 coins
+
+    randomUUID
+
+*/
